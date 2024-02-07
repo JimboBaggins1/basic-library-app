@@ -28,33 +28,50 @@ function addBookToLibrary() {
 
 function displayLibrary(myLibrary) {
     // Loops through myLibrary and displays current books in a table
-    const headers = ['Title', 'Author', 'Pages', 'Read/Unread']
     let body = document.body;
-    let tbl = document.createElement('table');
-    let hRow = document.createElement('tr');
-    tbl.appendChild(hRow);
+    let tbl = document.querySelector('table');
+    let tblBody = document.querySelector('tbody');
+    let tr = tblBody.insertRow();
+    let lastBook = myLibrary[myLibrary.length - 1];
 
+    for (prop in lastBook) {
+        let td = tr.insertCell();
+        td.appendChild(document.createTextNode(lastBook[prop]));
+    };
 
-    tbl.style.width = '100px';
-    tbl.style.border = '1px solid black';
-    
-    for (heading in headers) {
-        let th = document.createElement('th');
-        let thText = document.createTextNode(headers[heading]);
-        th.appendChild(thText);
-        hRow.appendChild(th);
-        th.style.border = '1px solid black';
-    }
+    const tdLast = tr.insertCell(-1);
+    const removeBtn = document.createElement('button');
+    removeBtn.setAttribute('class', 'remove');
+    removeBtn.setAttribute('id', myLibrary.indexOf(lastBook));
+    const removeBtnText = document.createTextNode('Remove');
+    removeBtn.appendChild(removeBtnText);
+    tdLast.appendChild(removeBtn);
 
-    myLibrary.forEach((book) => {
-        let tr = tbl.insertRow();
-        for (prop in book) {
-            let td = tr.insertCell();
-            td.appendChild(document.createTextNode(book[prop]));
-            td.style.border = '1px solid black';
-        }
-    });
-    tbl.style.borderCollapse = 'collapse';
+    tblBody.appendChild(tr);
+    tbl.appendChild(tblBody);
     body.appendChild(tbl);
 }
+
+const btn = document.getElementById('submit-btn');
+
+const addBookBtn = document.getElementById('addBook');
+const addBookModal = document.getElementById('addBookModal');
+const confirmBtn = addBookModal.querySelector('#confirmBtn');
+
+addBookBtn.addEventListener('click', () => { addBookModal.showModal(); });
+
+// addBookModal.addEventListener('close', (e) => {
+
+// })
+
+confirmBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    addBookModal.close();
+});
+
+confirmBtn.addEventListener('click', addBookToLibrary);
+confirmBtn.addEventListener('click', () => { displayLibrary(myLibrary) });
+
+// btn.addEventListener('click', addBookToLibrary);
+// btn.addEventListener('click', () => { displayLibrary(myLibrary) });
 
