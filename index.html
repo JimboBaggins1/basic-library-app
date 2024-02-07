@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <form action="/script.js">
+    <!-- <form action="/script.js">
         <label for="title">Enter the book title</label>
         <input type="text" id="title" name="book_title">
         <label for="author">Enter the author</label>
@@ -18,7 +18,42 @@
         <input type="number" id="pages" name="book_pages" min="0">
         <label for="is_read">Have you read this book before?</label>
         <input type="checkbox" id="is_read" name="is_read" value="true">
-        <input type="button" value="Submit" onclick="addBookToLibrary()">
-    </form>
+        <input type="button" value="Submit" id="submit-btn">
+    </form> -->
+
+    <dialog id="addBookModal">
+        <form>
+            <label for="title">Enter the book title</label>
+            <input type="text" id="title" name="book_title">
+            <label for="author">Enter the author</label>
+            <input type="text" id="author" name="book_author">
+            <label for="pages">Enter the number of pages</label>
+            <input type="number" id="pages" name="book_pages" min="0">
+            <label for="is_read">Have you read this book before?</label>
+            <input type="checkbox" id="is_read" name="is_read" value="true">
+
+            <div>
+                <button id="cancel" formmethod="dialog">Cancel</button>
+                <button id="confirmBtn" value="default">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+
+    <button id="addBook">Add Book</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Read/Unread</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
 </body>
 </html>
