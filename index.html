@@ -22,7 +22,7 @@
     </form> -->
 
     <dialog id="addBookModal">
-        <form>
+        <form id="modalForm">
             <label for="title">Enter the book title</label>
             <input type="text" id="title" name="book_title">
             <label for="author">Enter the author</label>
@@ -30,7 +30,7 @@
             <label for="pages">Enter the number of pages</label>
             <input type="number" id="pages" name="book_pages" min="0">
             <label for="is_read">Have you read this book before?</label>
-            <input type="checkbox" id="is_read" name="is_read" value="true">
+            <input type="checkbox" id="isRead" name="is_read" value="true">
 
             <div>
                 <button id="cancel" formmethod="dialog">Cancel</button>
