@@ -3,75 +3,116 @@
 const myLibrary = [];
 
 function Book(title, author, pages, isRead) {
-    // the constructor
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
-    // this.info = function() {
-    //     return this.isRead ? `${this.title} by ${this.author}, ${this.pages} pages, read.` : `${this.title} by ${this.author}, ${this.pages} pages, not read.`;
-    // };
+  // the constructor
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.isRead = isRead;
+  // this.info = function() {
+  //     return this.isRead ? `${this.title} by ${this.author}, ${this.pages} pages, read.` : `${this.title} by ${this.author}, ${this.pages} pages, not read.`;
+  // };
 }
 
 function addBookToLibrary() {
-    // Takes user input and adds book to myLibrary
-    const title = document.getElementById('title').value;
-    const author = document.getElementById('author').value;
-    const pages = document.getElementById('pages').value;
-    const isRead = document.getElementById('is_read').checked;
+  // Takes user input and adds book to myLibrary
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const pages = document.getElementById("pages").value;
+  const isRead = document.getElementById("isRead").checked;
 
-    const book = new Book(title, author, pages, isRead)
+  const book = new Book(title, author, pages, isRead);
 
-    myLibrary.push(book);
-    console.log(`Success. Title = ${book.title} Author = ${book.author} Pages = ${book.pages} isRead = ${book.isRead}.`);
+  myLibrary.push(book);
+  console.log(
+    `Success. Title = ${book.title} Author = ${book.author} Pages = ${book.pages} isRead = ${book.isRead}.`
+  );
 }
 
 function displayLibrary(myLibrary) {
-    // Loops through myLibrary and displays current books in a table
-    let body = document.body;
-    let tbl = document.querySelector('table');
-    let tblBody = document.querySelector('tbody');
-    let tr = tblBody.insertRow();
-    let lastBook = myLibrary[myLibrary.length - 1];
+  // Loops through myLibrary and displays current books in a table
+  const body = document.body;
+  const tbl = document.querySelector("table");
+  const tblBody = document.querySelector("tbody");
 
-    for (prop in lastBook) {
-        let td = tr.insertCell();
-        td.appendChild(document.createTextNode(lastBook[prop]));
-    };
+  // This resets the table to just the thead section
+  while (tblBody.childNodes.length) {
+    tblBody.removeChild(tblBody.childNodes[0]);
+  }
 
-    const tdLast = tr.insertCell(-1);
-    const removeBtn = document.createElement('button');
-    removeBtn.setAttribute('class', 'remove');
-    removeBtn.setAttribute('id', myLibrary.indexOf(lastBook));
-    const removeBtnText = document.createTextNode('Remove');
-    removeBtn.appendChild(removeBtnText);
-    tdLast.appendChild(removeBtn);
+  // Add a row for each book currently in library. For each row, populate with book properties
+  // Add a remove button to the end of each row
+  myLibrary.forEach((book) => {
+    const row = document.createElement("tr");
+    for (prop in book) {
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(book[prop]);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+    const lastRow = row.insertCell(-1);
+    addRemoveBtn(myLibrary.indexOf(book), lastRow);
 
-    tblBody.appendChild(tr);
-    tbl.appendChild(tblBody);
-    body.appendChild(tbl);
+    tblBody.appendChild(row);
+  });
+
+  // put the <tbody> in the <table>
+  tbl.appendChild(tblBody);
+  // appends <table> into <body>
+  body.appendChild(tbl);
 }
 
-const btn = document.getElementById('submit-btn');
+function addRemoveBtn(elem, cell) {
+  // Creates remove button with id = array index, and appends button to chosen table cell
+  const removeBtn = document.createElement("button");
+  removeBtn.setAttribute("class", "remove");
+  removeBtn.setAttribute("value", elem);
+  const removeBtnText = document.createTextNode("Remove");
+  removeBtn.appendChild(removeBtnText);
+  cell.appendChild(removeBtn);
+}
 
-const addBookBtn = document.getElementById('addBook');
-const addBookModal = document.getElementById('addBookModal');
-const confirmBtn = addBookModal.querySelector('#confirmBtn');
+function resetModal() {
+  // Reset the modal so that old data is not show on modal open
+  document.getElementById("modalForm").reset();
+}
 
-addBookBtn.addEventListener('click', () => { addBookModal.showModal(); });
+function removeBook(arr, arrIndex) {
+  // Remove book from myLibrary
+  if (arrIndex > -1) {
+    arr.splice(arrIndex, 1);
+  }
+}
 
-// addBookModal.addEventListener('close', (e) => {
+const addBookBtn = document.getElementById("addBook");
+const addBookModal = document.getElementById("addBookModal");
+const confirmBtn = addBookModal.querySelector("#confirmBtn");
+const table = document.querySelector("table");
 
-// })
+addBookModal.addEventListener("close", resetModal);
 
-confirmBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    addBookModal.close();
+addBookBtn.addEventListener("click", () => {
+  addBookModal.showModal();
 });
 
-confirmBtn.addEventListener('click', addBookToLibrary);
-confirmBtn.addEventListener('click', () => { displayLibrary(myLibrary) });
+confirmBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  addBookModal.close();
+});
 
-// btn.addEventListener('click', addBookToLibrary);
-// btn.addEventListener('click', () => { displayLibrary(myLibrary) });
+confirmBtn.addEventListener("click", addBookToLibrary);
+confirmBtn.addEventListener("click", () => {
+  displayLibrary(myLibrary);
+});
 
+// Remove book from myLibrary and update table on click of a Remove button. Event listener needs to be attached to table element, as Remove buttons don't exist in DOM when script is first run
+table.addEventListener("click", (e) => {
+  const target = e.target;
+  //checks if remove
+  if (target.matches(".remove")) {
+    const button = e.target;
+    let i = parseInt(button.value);
+    removeBook(myLibrary, i);
+    console.log(i);
+    displayLibrary(myLibrary);
+  }
+});
