@@ -108,6 +108,8 @@ const addBookBtn = document.getElementById("addBook");
 const addBookModal = document.getElementById("addBookModal");
 const confirmBtn = addBookModal.querySelector("#confirmBtn");
 const table = document.querySelector("table");
+const requiredTitle = document.getElementById("title");
+const requiredAuthor = document.getElementById("author");
 
 addBookModal.addEventListener("close", resetModal);
 
@@ -117,13 +119,33 @@ addBookBtn.addEventListener("click", () => {
 
 confirmBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  addBookModal.close();
+  if (requiredTitle.value.length > 0 && requiredAuthor.value.length > 0) {
+    addBookToLibrary();
+    addBookModal.close();
+    displayLibrary(myLibrary);
+  }
 });
 
-confirmBtn.addEventListener("click", addBookToLibrary);
-confirmBtn.addEventListener("click", () => {
-  displayLibrary(myLibrary);
+requiredTitle.addEventListener("focusout", function() {
+  if (this.value.length == 0) {
+    this.classList.add('error');
+  } else {
+    this.classList.remove('error');
+  }
 });
+
+requiredAuthor.addEventListener("focusout", function () {
+  if (this.value.length == 0) {
+    this.classList.add('error');
+  } else {
+    this.classList.remove('error');
+  }
+});
+
+// confirmBtn.addEventListener("click", addBookToLibrary);
+// confirmBtn.addEventListener("click", () => {
+//   displayLibrary(myLibrary);
+// });
 
 // Remove book from myLibrary and update table on click of a Remove button. Event listener needs to be attached to table element, as Remove buttons don't exist in DOM when script is first run
 table.addEventListener("click", (e) => {
