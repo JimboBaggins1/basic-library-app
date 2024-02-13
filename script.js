@@ -13,6 +13,12 @@ function Book(title, author, pages, isRead) {
   // };
 }
 
+Book.prototype.toggleRead = function(readStatus) {
+  if (readStatus === 'true') {
+    return this.isRead = false;
+  } else { return this.isRead = true; }
+}
+
 function addBookToLibrary() {
   // Takes user input and adds book to myLibrary
   const title = document.getElementById("title").value;
@@ -44,19 +50,25 @@ function displayLibrary(myLibrary) {
   myLibrary.forEach((book) => {
     const row = document.createElement("tr");
     for (prop in book) {
+      // Do not create a cell for the toggleRead prop
+      if (prop !== 'toggleRead') {
+        const cell = document.createElement("td");
       // for the isRead prop, create a button so user can toggle
-      const cell = document.createElement("td");
-      if (prop === 'isRead') {
-        const readBtn = document.createElement("button");
-        readBtn.setAttribute("class", "isRead");
-        const readBtnText = document.createTextNode(book[prop]);
-        readBtn.appendChild(readBtnText);
-        cell.appendChild(readBtn);
-      } else {
-        const cellText = document.createTextNode(book[prop]);
-        cell.appendChild(cellText);
+        if (prop === 'isRead') {
+          const readBtn = document.createElement("button");
+          readBtn.setAttribute("class", "isRead");
+          readBtn.setAttribute("value", myLibrary.indexOf(book));
+          readBtn.setAttribute("data-state", book[prop]);
+          const readBtnText = document.createTextNode(book[prop]);
+          readBtn.appendChild(readBtnText);
+          cell.appendChild(readBtn);
+        } else {
+          const cellText = document.createTextNode(book[prop]);
+          cell.appendChild(cellText);
+        }
+        row.appendChild(cell);
       }
-      row.appendChild(cell);
+      
     }
     const lastRow = row.insertCell(-1);
     addRemoveBtn(myLibrary.indexOf(book), lastRow);
@@ -118,10 +130,18 @@ table.addEventListener("click", (e) => {
   const target = e.target;
   //checks if remove
   if (target.matches(".remove")) {
-    const button = e.target;
-    let i = parseInt(button.value);
+    const removeButton = e.target;
+    let i = parseInt(removeButton.value);
     removeBook(myLibrary, i);
     console.log(i);
+    displayLibrary(myLibrary);
+  }
+
+  if (target.matches(".isRead")) {
+    const readButton = e.target;
+    let readState = readButton.getAttribute("data-state");
+    let book = parseInt(readButton.value);
+    myLibrary[book].toggleRead(readState);
     displayLibrary(myLibrary);
   }
 });
