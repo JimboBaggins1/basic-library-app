@@ -1,7 +1,78 @@
 /* style.css */
-table, th, td {
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    border-left: 100px solid black;
+    border-right: 100px solid black;
+    height: 100vh;
+}
+
+
+
+table {
+    table-layout: fixed;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
     border: 1px solid black;
     border-collapse: collapse;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f3f4f6;
+}
+  
+  tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+thead th:nth-child(1) {
+    width: 25%;
+}
+
+thead th:nth-child(2) {
+    width: 25%;
+}
+
+thead th:nth-child(3) {
+    width: 16.67%;
+}
+
+thead th:nth-child(4) {
+    width: 16.67%;
+}
+
+thead th:nth-child(5) {
+    width: 16.67%;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+tbody td {
+    text-align: center;
+}
+
+button#addBook {
+    position: relative;
+    background-color: #3b82f6; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 20px 20px 20px 0px;
+    left: 10%;
+}
+
+button#addBook:hover {
+    background-color: #60a5fa;
 }
 
 button.isRead, button.remove {
