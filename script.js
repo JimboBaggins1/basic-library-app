@@ -44,9 +44,18 @@ function displayLibrary(myLibrary) {
   myLibrary.forEach((book) => {
     const row = document.createElement("tr");
     for (prop in book) {
+      // for the isRead prop, create a button so user can toggle
       const cell = document.createElement("td");
-      const cellText = document.createTextNode(book[prop]);
-      cell.appendChild(cellText);
+      if (prop === 'isRead') {
+        const readBtn = document.createElement("button");
+        readBtn.setAttribute("class", "isRead");
+        const readBtnText = document.createTextNode(book[prop]);
+        readBtn.appendChild(readBtnText);
+        cell.appendChild(readBtn);
+      } else {
+        const cellText = document.createTextNode(book[prop]);
+        cell.appendChild(cellText);
+      }
       row.appendChild(cell);
     }
     const lastRow = row.insertCell(-1);
