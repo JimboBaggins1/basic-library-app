@@ -56,7 +56,8 @@ function displayLibrary(myLibrary) {
       // for the isRead prop, create a button so user can toggle
         if (prop === 'isRead') {
           const readBtn = document.createElement("button");
-          readBtn.setAttribute("class", "isRead");
+          // Toggles whether button is red or green based on whether book has been read
+          book[prop] ? readBtn.setAttribute("class", "isRead green") : readBtn.setAttribute("class", "isRead red");
           readBtn.setAttribute("value", myLibrary.indexOf(book));
           readBtn.setAttribute("data-state", book[prop]);
           const readBtnText = document.createTextNode(book[prop]);
@@ -104,6 +105,7 @@ function removeBook(arr, arrIndex) {
   }
 }
 
+ 
 const addBookBtn = document.getElementById("addBook");
 const addBookModal = document.getElementById("addBookModal");
 const confirmBtn = addBookModal.querySelector("#confirmBtn");
